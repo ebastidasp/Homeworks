@@ -322,6 +322,7 @@ public class AndroidTicTacToeActivity extends AppCompatActivity {
         super.onPause();
         mHumanMediaPlayer.release();
         mComputerMediaPlayer.release();
+        
     }
 
 }

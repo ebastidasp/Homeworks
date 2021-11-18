@@ -135,8 +135,6 @@ public class TicTacToeGame {
         }
     }
 
-
-
     public int getComputerMove(){
         int move = -1;
         if (mDifficultyLevel == DifficultyLevel.Easy)
@@ -147,8 +145,8 @@ public class TicTacToeGame {
                 move = getRandomMove();
         }
         else if (mDifficultyLevel == DifficultyLevel.Expert) {
-        // Try to win, but if that's not possible, block.
-        // If that's not possible, move anywhere.
+            // Try to win, but if that's not possible, block.
+            // If that's not possible, move anywhere.
             move = getWinningMove();
             if (move == -1)
                 move = getBlockingMove();
@@ -166,6 +164,7 @@ public class TicTacToeGame {
                 char curr = mBoard[i];
                 mBoard[i] = COMPUTER_PLAYER;
                 if (checkForWinner() == 3) {
+                    mBoard[i] = curr;
                     setMove(COMPUTER_PLAYER, i);
                     return i;
                 } else
@@ -201,6 +200,17 @@ public class TicTacToeGame {
         } while (mBoard[move] == HUMAN_PLAYER || mBoard[move] == COMPUTER_PLAYER);
         setMove(COMPUTER_PLAYER, move);
         return move;
+    }
+
+    public char getBoardOccupant(int i){
+        return mBoard[i];
+    }
+
+    public boolean canMove(int pos){
+        if(mBoard[pos] == OPEN_SPOT){
+            return true;
+        }
+        return false;
     }
 
 

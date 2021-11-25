@@ -27,6 +27,10 @@ public class TicTacToeGame {
         mDifficultyLevel = difficultyLevel;
     }
 
+    public DifficultyLevel getmDifficultyLevel(){
+        return mDifficultyLevel;
+    }
+
     private char mBoard[] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};
     public static final int BOARD_SIZE = 9;
 
@@ -35,6 +39,16 @@ public class TicTacToeGame {
     public static final char OPEN_SPOT = ' ';
 
     private Random mRand;
+
+    public char[] getBoardState(){
+        return mBoard;
+    }
+
+    public void setBoardState(char[] arr){
+        for(int i = 0; i < 9; i++){
+            mBoard[i] = arr[i];
+        }
+    }
 
     public TicTacToeGame() {
 

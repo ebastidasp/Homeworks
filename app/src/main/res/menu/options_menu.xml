@@ -12,13 +12,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
             android:title="Difficulty"
             android:icon="@drawable/difficulty_level"
             app:showAsAction = "never"/>
-        <item android:id="@+id/quit"
-            android:title="Quit"
-            android:icon="@drawable/quit_game"
-            app:showAsAction = "never"/>
         <item android:id="@+id/about"
             android:title="About"
             android:icon="@drawable/ic_action_book"
+            app:showAsAction = "never"/>
+        <item android:id="@+id/reset"
+            android:title="Reset"
+            android:icon="@drawable/ic_action_folder_open"
             app:showAsAction = "never"/>
     </menu>
 </item>

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
@@ -44,11 +46,21 @@ public class AndroidTicTacToeActivity extends AppCompatActivity {
     MediaPlayer mHumanMediaPlayer;
     MediaPlayer mComputerMediaPlayer;
 
+    private SharedPreferences mPrefs;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPrefs = getSharedPreferences("ttt_prefs", MODE_PRIVATE);
         setContentView(R.layout.main);
         mGame = new TicTacToeGame();
+        int currDiff = mPrefs.getInt("currDiff", 2);
+        if(currDiff == 0)
+            mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Easy);
+        else if(currDiff == 1)
+            mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Harder);
+        else
+            mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.Expert);
         mBoardView = (BoardView) findViewById(R.id.board);
         mBoardView.setGame(mGame);
         mGameOver = false;
@@ -64,6 +76,32 @@ public class AndroidTicTacToeActivity extends AppCompatActivity {
         mBoardView.setOnTouchListener(mTouchListener);
 
         startNewGame();
+
+        if (savedInstanceState == null) {
+            startNewGame();
+        }
+        else {
+// Restore the game's state
+            mGame.setBoardState(savedInstanceState.getCharArray("board"));
+            mGameOver = savedInstanceState.getBoolean("mGameOver");
+            mInfoTextView.setText(savedInstanceState.getCharSequence("info"));
+            mHumanWins = savedInstanceState.getInt("mHumanWins");
+            mComputerWins = savedInstanceState.getInt("mComputerWins");
+            mTies = savedInstanceState.getInt("mTies");
+        }
+
+
+        // Restore the scores
+        mHumanWins = mPrefs.getInt("mHumanWins", 0);
+        mComputerWins = mPrefs.getInt("mComputerWins", 0);
+        mTies = mPrefs.getInt("mTies", 0);
+
+        displayScores();
+
+    }
+
+    private void displayScores() {
+        mInfoWins.setText("Human:"+String.valueOf(mHumanWins)+" Computer:"+String.valueOf(mComputerWins)+" Ties:"+String.valueOf(mTies));
     }
 
     @Override
@@ -75,8 +113,8 @@ public class AndroidTicTacToeActivity extends AppCompatActivity {
     }
 
     static final int DIALOG_DIFFICULTY_ID = 0;
-    static final int DIALOG_QUIT_ID = 1;
-    static final int DIALOG_ABOUT = 2;
+    static final int DIALOG_ABOUT = 1;
+    static final int DIALOG_RESET = 2;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -87,11 +125,11 @@ public class AndroidTicTacToeActivity extends AppCompatActivity {
             case R.id.ai_difficulty:
                 showDialog(DIALOG_DIFFICULTY_ID);
                 return true;
-            case R.id.quit:
-                showDialog(DIALOG_QUIT_ID);
-                return true;
             case R.id.about:
                 showDialog(DIALOG_ABOUT);
+                return true;
+            case R.id.reset:
+                showDialog(DIALOG_RESET);
                 return true;
         }
         return false;
@@ -176,7 +214,9 @@ public class AndroidTicTacToeActivity extends AppCompatActivity {
                         getResources().getString(R.string.difficulty_harder),
                         getResources().getString(R.string.difficulty_expert)};
 
-                int selected = 2;
+                mPrefs = getSharedPreferences("ttt_prefs", MODE_PRIVATE);
+
+                int selected = mPrefs.getInt("currDiff", 2);
 
 
 // TODO: Set selected, an integer (0 to n-1), for the Difficulty dialog.
@@ -205,18 +245,6 @@ public class AndroidTicTacToeActivity extends AppCompatActivity {
                         });
                 dialog = builder.create();
                 break;
-            case DIALOG_QUIT_ID:
-// Create the quit confirmation dialog
-                builder.setMessage(R.string.quit_question)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                AndroidTicTacToeActivity.this.finish();
-                            }
-                        })
-                        .setNegativeButton(R.string.no, null);
-                dialog = builder.create();
-                break;
             case DIALOG_ABOUT:
                 Context context = getApplicationContext();
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -224,6 +252,12 @@ public class AndroidTicTacToeActivity extends AppCompatActivity {
                 builder.setView(layout);
                 builder.setPositiveButton("OK", null);
                 dialog = builder.create();
+                break;
+            case DIALOG_RESET:
+                mHumanWins = 0;
+                mComputerWins = 0;
+                mTies = 0;
+                displayScores();
                 break;
         }
         return dialog;
@@ -303,7 +337,8 @@ public class AndroidTicTacToeActivity extends AppCompatActivity {
                     mStart++;
                     mStart = mStart % 2;
                     mInfoWins.setText("Human:"+String.valueOf(mHumanWins)+" Computer:"+String.valueOf(mComputerWins)+" Ties:"+String.valueOf(mTies));
-                }}
+                }
+            }
 // If no winner yet, let the computer make a move
 
 // So we aren't notified of continued events when finger is moved
@@ -314,15 +349,47 @@ public class AndroidTicTacToeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mHumanMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.humansound);
-        mComputerMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.computersound);
+        mHumanMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.humanturn);
+        mComputerMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.computerturn);
     }
     @Override
     protected void onPause() {
         super.onPause();
         mHumanMediaPlayer.release();
         mComputerMediaPlayer.release();
-        
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putCharArray("board", mGame.getBoardState());
+        outState.putBoolean("mGameOver", mGameOver);
+        outState.putInt("mHumanWins", Integer.valueOf(mHumanWins));
+        outState.putInt("mComputerWins", Integer.valueOf(mComputerWins));
+        outState.putInt("mTies", Integer.valueOf(mTies));
+        outState.putCharSequence("info", mInfoTextView.getText());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+// Save the current scores
+        SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putInt("mStart", mStart);
+        ed.putInt("mHumanWins", mHumanWins);
+        ed.putInt("mComputerWins", mComputerWins);
+        ed.putInt("mTies", mTies);
+        int currDiff;
+        TicTacToeGame.DifficultyLevel diff = mGame.getmDifficultyLevel();
+        if(diff == TicTacToeGame.DifficultyLevel.Easy)
+            currDiff = 0;
+        else if(diff == TicTacToeGame.DifficultyLevel.Harder)
+            currDiff = 1;
+        else
+            currDiff = 2;
+        ed.putInt("currDiff", currDiff);
+        ed.commit();
     }
 
 }

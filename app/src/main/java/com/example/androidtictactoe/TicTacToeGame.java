@@ -9,7 +9,9 @@ package com.example.androidtictactoe;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -36,6 +38,8 @@ public class TicTacToeGame {
 
     public static final char HUMAN_PLAYER = 'X';
     public static final char COMPUTER_PLAYER = 'O';
+    public static final char PLAYER1_PLAYER = 'X';
+    public static final char PLAYER2_PLAYER = 'O';
     public static final char OPEN_SPOT = ' ';
 
     private Random mRand;
@@ -43,6 +47,21 @@ public class TicTacToeGame {
     public char[] getBoardState(){
         return mBoard;
     }
+
+    public List<String> getBoardStateList(){
+        List<String> boardList = new ArrayList<>();
+        for (char elem : mBoard){
+            boardList.add(""+elem);
+        }
+        return boardList;
+    }
+
+    public void setBoardStateList(List<String> boardList){
+        for(int i = 0; i < boardList.size(); i++){
+            mBoard[i] = boardList.get(i).charAt(0);
+        }
+    }
+
 
     public void setBoardState(char[] arr){
         for(int i = 0; i < 9; i++){

@@ -23,4 +23,17 @@
     <string name="quit_question">Are you sure you want to quit?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <string name="str_true">Verdadero</string>
+    <string name="str_false">Falso</string>
+    <string name="str_player_1">Jugador 1</string>
+    <string name="str_player_2">Jugador 2</string>
+
+    <string name="toast_difficulty">Dificultad: </string>
+    <string name="toast_reset_games">¡Cuenta Reiniciada!</string>
+    <string name="toast_auto_new_game">Auto Juego Nuevo: </string>
+    <string name="toast_auto_activated">Auto Juego Nuevo: </string>
+    <string name="toast_new_game">¡Juego Nuevo Iniciado!</string>
+
+    <string name="begin_auto_new_game">¡Fin! Empezando Juego Nuevo</string>
 </resources>

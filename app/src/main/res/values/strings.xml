@@ -1,39 +1,32 @@
 <resources>
-    <string name="app_name">AndroidTicTacToe</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="app_name">Contactos Empresariales</string>
+    <string name="menu_title_actions">Acciones</string>
+    <string name="Add_New">Nueva Empresa</string>
+    <string name="edit">Editar Empresa</string>
+    <string name="delete">Eliminar Empresa</string>
+    <string name="company">Empresa</string>
+    <string name="company_list">Lista de Empresas</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="first_human">You go first.</string>
-    <string name="first_computer">Computer goes first.</string>
-    <string name="turn_human">Your turn.</string>
-    <string name="turn_computer">Android\'s turn.</string>
-    <string name="result_tie">It\'s a tie.</string>
-    <string name="result_human_wins">You won!</string>
-    <string name="result_computer_wins">Android won!</string>
-    <string name="difficulty_choose">Choose a difficulty level:</string>
-    <string name="difficulty_easy">Easy</string>
-    <string name="difficulty_harder">Harder</string>
-    <string name="difficulty_expert">Expert</string>
-    <string name="quit_question">Are you sure you want to quit?</string>
-    <string name="yes">Yes</string>
+    <string name="created_success">Creado exitosamente</string>
+    <string name="created_failure">Falló la creación</string>
+    <string name="updated_success">Modificado exitosamente</string>
+    <string name="updated_failure">Falló la modificación</string>
+    <string name="deleted_success">Eliminado con éxito</string>
+    <string name="deleted_failure">No se pudo eliminar</string>
+
+    <string name="name">Nombre</string>
+    <string name="url">URL</string>
+    <string name="phone">Teléfono contacto</string>
+    <string name="email">Email contacto</string>
+    <string name="products">Productos/Servicios</string>
+    <string name="clasification">Clasificación de la empresa</string>
+    <string name="consultancy">Consultoría</string>
+    <string name="development">Desarrollo a la medida</string>
+    <string name="fabric">Fábrica de software</string>
+
+    <string name="save">Guardar Contacto</string>
+    <string name="titleDeleteDialog">¿Estás seguro?</string>
+    <string name="deleteContact">¿Estás seguro de eliminar este contacto?</string>
+    <string name="yes">Si</string>
     <string name="no">No</string>
-
-    <string name="str_true">Verdadero</string>
-    <string name="str_false">Falso</string>
-    <string name="str_player_1">Jugador 1</string>
-    <string name="str_player_2">Jugador 2</string>
-
-    <string name="toast_difficulty">Dificultad: </string>
-    <string name="toast_reset_games">¡Cuenta Reiniciada!</string>
-    <string name="toast_auto_new_game">Auto Juego Nuevo: </string>
-    <string name="toast_auto_activated">Auto Juego Nuevo: </string>
-    <string name="toast_new_game">¡Juego Nuevo Iniciado!</string>
-
-    <string name="begin_auto_new_game">¡Fin! Empezando Juego Nuevo</string>
 </resources>
